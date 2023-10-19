@@ -1,4 +1,4 @@
-# SOlab2Exercitii
+# SOlabExercitii
 Se va scrie un shell script care primeste urmatorii parametrii:
 -
 - un fisier
