@@ -89,6 +89,7 @@ void writeForRegularBMPFile(char *dir,char *fis,char buffer[4096],int fisier_ies
   sprintf(buffer+strlen(buffer),"\n");
   printf("%s",buffer);
   write(fisier_iesire,buffer,strlen(buffer));
+  close(f);
 }
 
 void writeForRegularFile(char *dir,char *fis,char buffer[4096],int fisier_iesire,struct stat st)
@@ -108,6 +109,7 @@ void writeForRegularFile(char *dir,char *fis,char buffer[4096],int fisier_iesire
   sprintf(buffer+strlen(buffer),"\n");
   printf("%s",buffer);
   write(fisier_iesire,buffer,strlen(buffer));
+  close(f);
 }
 
 void writeForSymbolicLink(char *dir,char *fis,char buffer[4096],int fisier_iesire,struct stat st)
@@ -123,6 +125,7 @@ void writeForSymbolicLink(char *dir,char *fis,char buffer[4096],int fisier_iesir
   sprintf(buffer+strlen(buffer),"\n");
   printf("%s",buffer);
   write(fisier_iesire,buffer,strlen(buffer));
+  close(f);
 }
 
 void writeForDirectory(char*dir,char *fis,char buffer[4096],int fisier_iesire,struct stat st)
@@ -139,6 +142,7 @@ void writeForDirectory(char*dir,char *fis,char buffer[4096],int fisier_iesire,st
    sprintf(buffer+strlen(buffer),"\n");
   printf("%s",buffer);
   write(fisier_iesire,buffer,strlen(buffer));
+  close(f);
 }
 
 void verifyTypeOfFile(char *file)
