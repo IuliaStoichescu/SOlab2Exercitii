@@ -192,7 +192,7 @@ void verifyTypeOfFile(char *file,char *file2)
 	      output2=open(path2,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP);
 	      write(output2,buffer2,sizeof(buffer2));
 	      close(output2);
-	      exit(5);
+	      exit(8);
 	    }
 	}
     }
