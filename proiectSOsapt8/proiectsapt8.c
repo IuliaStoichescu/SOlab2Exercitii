@@ -85,7 +85,7 @@ void writeForRegularBMPFile(char *dir,char *fis,char buffer[4096],struct stat st
   sprintf(buffer+strlen(buffer),"lungime: %d\n",height);
   sprintf(buffer+strlen(buffer),"dimensiunea fisierului: %ld\n",st.st_size);
   sprintf(buffer+strlen(buffer),"identificator: %d\n",st.st_uid);
-  sprintf(buffer+strlen(buffer),"timpul ultimei modificari: %s",ctime(&st.st_mtime));
+  sprintf(buffer+strlen(buffer),"timpul ultimei modificari: %s\n",ctime(&st.st_mtime));
   sprintf(buffer+strlen(buffer),"contorul de legaturi: %ld\n",st.st_nlink);
  
   drept_acces(st.st_mode,buffer,"");
@@ -102,7 +102,7 @@ void writeForRegularFile(char *dir,char *fis,char buffer[4096],struct stat st)
   sprintf(buffer,"numele fisierului: %s\n",fis);
   sprintf(buffer+strlen(buffer),"dimensiunea fisierului: %ld\n",st.st_size);
   sprintf(buffer+strlen(buffer),"identificator: %d\n",st.st_uid);
-  sprintf(buffer+strlen(buffer),"timpul ultimei modificari: %s",ctime(&st.st_mtime));
+  sprintf(buffer+strlen(buffer),"timpul ultimei modificari: %s\n",ctime(&st.st_mtime));
   sprintf(buffer+strlen(buffer),"contorul de legaturi: %ld\n",st.st_nlink);
  
   drept_acces(st.st_mode,buffer,"");
@@ -145,6 +145,9 @@ void verifyTypeOfFile(char *file,char *file2)
   int cnt=0,status,wpid;
   int pid0,pid1,pid2,pid3,pid4;
   char file_name1[256],buffer1[4096],path1[1024];
+  char file_name2[256],buffer2[4096],path2[1024];
+  char file_name3[256],buffer3[4096],path3[1024];
+  char file_name4[256],buffer4[4096],path4[1024];
   struct stat st;
   sprintf(filePath,"%s/%s",file,dt->d_name);
   if(lstat(filePath,&st)==-1)
@@ -158,19 +161,20 @@ void verifyTypeOfFile(char *file,char *file2)
 	{
 	  pid0=fork();
 	  if(pid0==0)
-	    {
+	  {
 	      cnt++;
 	      strcpy(file_name1,dt->d_name);
 	      strcat(file_name1,"_statistica.txt");
 	      writeForRegularBMPFile(file,dt->d_name,buffer1,st);
 	      printf("%s",buffer1);
-	      sprintf(path1,"../%s/%s",file2,file_name1);
+	      sprintf(path1,"%s/%s",file2,file_name1);
+	      sprintf(path1+strlen(path1),"\n");
 	      printf("Calea este: %s\n",path1);
 	      output1=open(path1,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP);
 	      write(output1,buffer1,sizeof(buffer1));
 	      close(output1);
 	      exit(10);
-	    }
+	  }
 	}
       else
 	{
@@ -178,12 +182,12 @@ void verifyTypeOfFile(char *file,char *file2)
 	  if(pid2==0)
 	    {
 	      cnt++;
-	      char file_name2[256],buffer2[4096],path2[1024];
 	      strcpy(file_name2,dt->d_name);
 	      strcat(file_name2,"_statistica.txt");
 	      writeForRegularFile(file,dt->d_name,buffer2,st);
 	      printf("%s",buffer2);
-	      sprintf(path2,"../%s/%s",file2,file_name2);
+	      sprintf(path2,"%s/%s",file2,file_name2);
+	      sprintf(path2+strlen(path2),"\n");
 	      printf("Calea este: %s\n",path2);
 	      output2=open(path2,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP);
 	      write(output2,buffer2,sizeof(buffer2));
@@ -200,12 +204,12 @@ void verifyTypeOfFile(char *file,char *file2)
 	  if(pid3==0)
 	    {
 	      cnt++;
-	      char file_name3[256],buffer3[4096],path3[1024];
 	      strcpy(file_name3,dt->d_name);
 	      strcat(file_name3,"_statistica.txt");
 	      writeForSymbolicLink(file,dt->d_name,buffer3,st);
 	      printf("%s",buffer3);
-	      sprintf(path3,"../%s/%s",file2,file_name3);
+	      sprintf(path3,"%s/%s",file2,file_name3);
+	      sprintf(path3+strlen(path3),"\n");
 	      printf("Calea este: %s\n",path3);
 	      output3=open(path3,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP);
 	      write(output3,buffer3,sizeof(buffer3));
@@ -220,12 +224,12 @@ void verifyTypeOfFile(char *file,char *file2)
       if(pid4==0)
 	{
 	  cnt++;
-	  char file_name4[256],buffer4[4096],path4[1024];
 	  strcpy(file_name4,dt->d_name);
 	  strcat(file_name4,"_statistica.txt");
 	  writeForDirectory(file,dt->d_name,buffer4,st);
 	  printf("%s",buffer4);
-	  sprintf(path4,"../%s/%s",file2,file_name4);
+	  sprintf(path4,"%s/%s",file2,file_name4);
+	  sprintf(path4+strlen(path4),"\n");
 	  printf("Calea este: %s\n",path4);
 	  output4=open(path4,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP);
 	  write(output4,buffer4,sizeof(buffer4));
