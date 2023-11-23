@@ -20,6 +20,7 @@
 struct timespec st_mtim;
 struct dirent *dt,*dt2;
 struct passwd *userInfo;
+int status,cnt;
 
 void drept_acces(mode_t mode,char buffer[4096],const char optional[100])
 {
@@ -142,7 +143,6 @@ void verifyTypeOfFile(char *file,char *file2)
   char linkbuff[256];
   char filePath[1024];
   int output1,output2,output3,output4;
-  int cnt=0,status,wpid;
   int pid0,pid1,pid2,pid3,pid4;
   char file_name1[256],buffer1[4096],path1[1024];
   char file_name2[256],buffer2[4096],path2[1024];
@@ -166,15 +166,20 @@ void verifyTypeOfFile(char *file,char *file2)
 	      strcpy(file_name1,dt->d_name);
 	      strcat(file_name1,"_statistica.txt");
 	      writeForRegularBMPFile(file,dt->d_name,buffer1,st);
-	      printf("%s",buffer1);
+	      //printf("%s",buffer1);
 	      sprintf(path1,"%s/%s",file2,file_name1);
-	      sprintf(path1+strlen(path1),"\n");
+	      //sprintf(path1+strlen(path1),"\n");
 	      printf("Calea este: %s\n",path1);
 	      output1=open(path1,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP);
-	      write(output1,buffer1,sizeof(buffer1));
+	      write(output1,buffer1,strlen(buffer1));
 	      close(output1);
 	      exit(10);
 	  }
+	  // pid1=fork();
+	  //  if(pid1==0)
+	  //  {
+
+	  //  }
 	}
       else
 	{
@@ -185,12 +190,12 @@ void verifyTypeOfFile(char *file,char *file2)
 	      strcpy(file_name2,dt->d_name);
 	      strcat(file_name2,"_statistica.txt");
 	      writeForRegularFile(file,dt->d_name,buffer2,st);
-	      printf("%s",buffer2);
+	      //printf("%s",buffer2);
 	      sprintf(path2,"%s/%s",file2,file_name2);
-	      sprintf(path2+strlen(path2),"\n");
+	      //sprintf(path2+strlen(path2),"\n");
 	      printf("Calea este: %s\n",path2);
 	      output2=open(path2,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP);
-	      write(output2,buffer2,sizeof(buffer2));
+	      write(output2,buffer2,strlen(buffer2));
 	      close(output2);
 	      exit(8);
 	    }
@@ -207,12 +212,12 @@ void verifyTypeOfFile(char *file,char *file2)
 	      strcpy(file_name3,dt->d_name);
 	      strcat(file_name3,"_statistica.txt");
 	      writeForSymbolicLink(file,dt->d_name,buffer3,st);
-	      printf("%s",buffer3);
+	      //printf("%s",buffer3);
 	      sprintf(path3,"%s/%s",file2,file_name3);
-	      sprintf(path3+strlen(path3),"\n");
+	      //sprintf(path3+strlen(path3),"\n");
 	      printf("Calea este: %s\n",path3);
 	      output3=open(path3,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP);
-	      write(output3,buffer3,sizeof(buffer3));
+	      write(output3,buffer3,strlen(buffer3));
 	      close(output3);
 	      exit(5);
 	    }
@@ -227,22 +232,17 @@ void verifyTypeOfFile(char *file,char *file2)
 	  strcpy(file_name4,dt->d_name);
 	  strcat(file_name4,"_statistica.txt");
 	  writeForDirectory(file,dt->d_name,buffer4,st);
-	  printf("%s",buffer4);
+	  // printf("%s",buffer4);
 	  sprintf(path4,"%s/%s",file2,file_name4);
-	  sprintf(path4+strlen(path4),"\n");
+	  //sprintf(path4+strlen(path4),"\n");
 	  printf("Calea este: %s\n",path4);
 	  output4=open(path4,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP);
-	  write(output4,buffer4,sizeof(buffer4));
+	  write(output4,buffer4,strlen(buffer4));
 	  close(output4);
 	  exit(5);
 	}
     }
-
-  wpid=wait(&status);
-  if(WIFEXITED(status))
-    {
-      printf("Procesul %d s-a terminat cu statusul %d\n",wpid,WEXITSTATUS(status));   
-    }
+    
 }
 
 
@@ -275,13 +275,22 @@ int main(int argc,char **argv)
   
   while(dt!=NULL)
     {
-      if(strcmp(dt->d_name,".")!=0 || strcmp(dt->d_name,"..")!=0)
+      if(strcmp(dt->d_name,".")!=0 && strcmp(dt->d_name,"..")!=0)
 	{
           verifyTypeOfFile(argv[1],argv[2]);
+	   
 	}
-      dt = readdir(dire);
+     dt = readdir(dire);
     }
-
+ 
+ for(int i=1;i<=cnt;i++)
+    {
+      int wpid=wait(&status);
+      if(WIFEXITED(status))
+	{
+	  printf("Procesul %d s-a terminat cu statusul %d\n",wpid,WEXITSTATUS(status));   
+	}
+    }
   closedir(dire);
   closedir(dir1);
   return 0;
